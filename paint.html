@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Paint Page</title>
+    <style>
+        #canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+        }
+
+        #colorSelector {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Paint Page</h1>
+
+    <div id="colorSelector">
+        <label for="color">Color:</label>
+        <input type="color" id="color" value="#000000">
+        <button id="resetButton">Reset</button>
+    </div>
+
+
+    <canvas id="canvas" width="800" height="400"></canvas>
+
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var painting = false;
+        var color = '#000000';
+
+        canvas.addEventListener('mousedown', startPainting);
+        canvas.addEventListener('mouseup', stopPainting);
+        canvas.addEventListener('mousemove', draw);
+
+        document.getElementById('color').addEventListener('input', setColor);
+
+        var resetButton = document.getElementById('resetButton');
+        resetButton.addEventListener('click', resetCanvas);
+
+        function startPainting(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function stopPainting() {
+            painting = false;
+        }
+
+        function draw(e) {
+            if (!painting) return;
+
+            var x = e.clientX - canvas.offsetLeft;
+            var y = e.clientY - canvas.offsetTop;
+
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, 5, 5);
+        }
+
+        function setColor(e) {
+            color = e.target.value;
+        }
+
+        function resetCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    </script>
+</body>
+
+</html>
